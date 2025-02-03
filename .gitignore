@@ -53,12 +53,6 @@ __pycache__/
 Plugins/*/Intermediate/
 Plugins/*/Binaries/
 
-# Ignore Unreal Engine-specific project files
-*.uasset
-*.umap
-*.ubulk
-*.uexp
-
 # Mac specific
 .DS_Store
 
