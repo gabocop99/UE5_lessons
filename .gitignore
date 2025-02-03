@@ -1,0 +1,74 @@
+# Visual Studio / Rider
+.vscode/
+.idea/
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sdf
+*.VC.db
+*.VC.opendb
+*.csproj
+*.pidb
+*.sln.docstates
+
+# Binaries
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Debug/
+Build/
+Script/
+
+# Unreal Engine-specific
+*.xcodeproj
+*.xcworkspace
+*.DS_Store
+*.app
+*.dSYM
+*.ipa
+*.xcuserstate
+
+# Logs and temp files
+*.log
+*.temp
+*.bak
+*.swp
+*.swo
+*.tmp
+*.cache
+
+# Auto-generated files
+*.generated.cpp
+*.generated.h
+*.vcxproj*
+
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+
+# Plugins (Optional, remove if you want to include them in version control)
+Plugins/*/Intermediate/
+Plugins/*/Binaries/
+
+# Ignore Unreal Engine-specific project files
+*.uasset
+*.umap
+*.ubulk
+*.uexp
+
+# Mac specific
+.DS_Store
+
+# Linux specific
+*.swp
+
+# Windows specific
+Thumbs.db
+Desktop.ini
+
+# If using Rider
+.idea/
+*.iml
