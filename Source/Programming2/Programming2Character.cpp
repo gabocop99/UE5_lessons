@@ -179,6 +179,7 @@ void AProgramming2Character::AimIn()
 	GEngine->AddOnScreenDebugMessage(6, 1.0f, FColor::Green, TEXT("Aiming in"));
 	bUseControllerRotationYaw = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+	OnStartAiming.Broadcast();
 	AimTimeline.Play();
 }
 
@@ -187,5 +188,6 @@ void AProgramming2Character::AimOut()
 	GEngine->AddOnScreenDebugMessage(6, 1.0f, FColor::Green, TEXT("Aiming out"));
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+	OnEndAiming.Broadcast();
 	AimTimeline.Reverse();
 }

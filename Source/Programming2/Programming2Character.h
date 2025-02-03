@@ -16,6 +16,8 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameStateCharacter);
+
 UCLASS(config=Game)
 class AProgramming2Character : public ACharacter
 {
@@ -28,7 +30,7 @@ class AProgramming2Character : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
-	
+
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
@@ -49,17 +51,19 @@ class AProgramming2Character : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* AimAction;
 
-	
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true") )
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* WeaponMesh;
+
+	UPROPERTY(BlueprintAssignable)
+	FGameStateCharacter OnStartAiming;
+
+	UPROPERTY(BlueprintAssignable)
+	FGameStateCharacter OnEndAiming;
 
 public:
 	AProgramming2Character();
-	
 
 protected:
-
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
@@ -69,7 +73,6 @@ protected:
 	virtual void BeginPlay() override;
 
 protected:
-
 	virtual void NotifyControllerChanged() override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -99,6 +102,4 @@ public:
 	void HandleAimProgress(float Progress);
 	UFUNCTION()
 	void HandleOffsetProgress(FVector Offset);
-	
 };
-
