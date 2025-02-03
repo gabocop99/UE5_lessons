@@ -92,7 +92,8 @@ public:
 	FTimeline AimTimeline;
 
 	UFUNCTION()
-	void Aim();
+	void AimIn();
+	void AimOut();
 
 	UFUNCTION()
 	void HandleAimProgress(float Progress);

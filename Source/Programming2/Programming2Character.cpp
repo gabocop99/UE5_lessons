@@ -92,8 +92,8 @@ void AProgramming2Character::SetupPlayerInputComponent(UInputComponent* PlayerIn
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AProgramming2Character::Look);
 
-		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &AProgramming2Character::Aim);
-		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &AProgramming2Character::Aim);
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &AProgramming2Character::AimIn);
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &AProgramming2Character::AimOut);
 	}
 	else
 	{
@@ -174,6 +174,18 @@ void AProgramming2Character::Look(const FInputActionValue& Value)
 	}
 }
 
-void AProgramming2Character::Aim()
+void AProgramming2Character::AimIn()
 {
+	GEngine->AddOnScreenDebugMessage(6, 1.0f, FColor::Green, TEXT("Aiming in"));
+	bUseControllerRotationYaw = true;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	AimTimeline.Play();
+}
+
+void AProgramming2Character::AimOut()
+{
+	GEngine->AddOnScreenDebugMessage(6, 1.0f, FColor::Green, TEXT("Aiming out"));
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	AimTimeline.Reverse();
 }
