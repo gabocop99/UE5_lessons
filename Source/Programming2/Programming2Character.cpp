@@ -111,16 +111,6 @@ void AProgramming2Character::Tick(float DeltaSeconds)
 	AimTimeline.TickTimeline(DeltaSeconds);
 }
 
-void AProgramming2Character::HandleAimProgress(float Progress)
-{
-	CameraBoom->TargetArmLength = Progress;
-}
-
-void AProgramming2Character::HandleOffsetProgress(FVector3d Offset)
-{
-	CameraBoom->SocketOffset = Offset;
-}
-
 
 void AProgramming2Character::BeginPlay()
 {
@@ -137,6 +127,15 @@ void AProgramming2Character::BeginPlay()
 	}
 }
 
+void AProgramming2Character::HandleAimProgress(float Progress)
+{
+	CameraBoom->TargetArmLength = Progress;
+}
+
+void AProgramming2Character::HandleOffsetProgress(FVector3d Offset)
+{
+	CameraBoom->SocketOffset = Offset;
+}
 
 void AProgramming2Character::Move(const FInputActionValue& Value)
 {
