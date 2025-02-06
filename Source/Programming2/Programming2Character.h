@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "HealthComponent.h"
 #include "Components/TimelineComponent.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
@@ -51,6 +52,10 @@ class AProgramming2Character : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* AimAction;
 
+	/** Fire Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* FireAction;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* WeaponMesh;
 
@@ -59,6 +64,12 @@ class AProgramming2Character : public ACharacter
 
 	UPROPERTY(BlueprintAssignable)
 	FGameStateCharacter OnEndAiming;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health", meta = (AllowPrivateAccess = "true"))
+	UHealthComponent* HealthComponent;
+
+	UPROPERTY(EditAnywhere)
+	float Force;
 
 public:
 	AProgramming2Character();
@@ -96,7 +107,12 @@ public:
 
 	UFUNCTION()
 	void AimIn();
+
+	UFUNCTION()
 	void AimOut();
+
+	UFUNCTION()
+	void Shoot();
 
 	UFUNCTION()
 	void HandleAimProgress(float Progress);

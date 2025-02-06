@@ -10,7 +10,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "PhysicsReceiver.h"
 #include "Components/TimelineComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -57,6 +59,8 @@ AProgramming2Character::AProgramming2Character()
 
 	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMesh"));
 	WeaponMesh->SetupAttachment(GetMesh(), FName("right_hand_weapon_rSocket"));
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -94,6 +98,10 @@ void AProgramming2Character::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &AProgramming2Character::AimIn);
 		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &AProgramming2Character::AimOut);
+
+		// EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Ongoing, this, &AProgramming2Character::Shoot);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &AProgramming2Character::Shoot);
+		// EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AProgramming2Character::AimOut);
 	}
 	else
 	{
@@ -189,4 +197,37 @@ void AProgramming2Character::AimOut()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	OnEndAiming.Broadcast();
 	AimTimeline.Reverse();
+}
+
+void AProgramming2Character::Shoot()
+{
+	FVector Start = FollowCamera->GetComponentLocation();
+	FVector End = Start + FollowCamera->GetForwardVector() * 100000;
+
+
+	FHitResult Hit;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Pawn, Params);
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Black, "bHit ");
+
+
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red);
+
+	if (!bHit) return;
+
+	AActor* HitActor = Hit.GetActor();
+	if (IsValid(HitActor))
+	{
+		auto Phys = HitActor->GetComponentByClass<UPhysicsReceiver>();
+		if (IsValid(Phys))
+		{
+			FVector Direction = End - Start;
+			Direction.Normalize();
+
+			Phys->ReceivePush(Force, Direction, Hit.Location);
+		}
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Black, "Colpito " + Hit.GetActor()->GetName());
 }
