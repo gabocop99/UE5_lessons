@@ -13,12 +13,7 @@ class PROGRAMMING2_API AGoal : public AActor
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleAnywhere)
-	int Score = 0;
-
-	
-	
-public:	
+public:
 	// Sets default values for this actor's properties
 	AGoal();
 
@@ -29,7 +24,14 @@ protected:
 	UFUNCTION()
 	void OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(BlueprintReadWrite)
+	int Score = 0;
+
+
+	UPROPERTY(BlueprintAssignable)
+	FGoalState OnScoreChanged;
 };

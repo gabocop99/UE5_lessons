@@ -32,6 +32,7 @@ void AGoal::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	if (IsValid(Ball))
 	{
 		Score++;
+		OnScoreChanged.Broadcast();
 	}
 }
 
