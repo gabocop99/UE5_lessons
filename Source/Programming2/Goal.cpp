@@ -4,13 +4,13 @@
 #include "Goal.h"
 
 #include "PhysicsReceiver.h"
+#include "ToolBuilderUtil.h"
 
 // Sets default values
 AGoal::AGoal()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -22,7 +22,6 @@ void AGoal::BeginPlay()
 
 void AGoal::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	
 	if (!IsValid(OtherActor))
 	{
 		return;
@@ -41,4 +40,3 @@ void AGoal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-
