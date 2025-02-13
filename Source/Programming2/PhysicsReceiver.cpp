@@ -41,6 +41,8 @@ void UPhysicsReceiver::ReceivePush(float Force, FVector Direction, FVector Locat
 {
 	auto Mesh = GetOwner()->GetComponentByClass<UStaticMeshComponent>();
 	FVector ForceVector = Direction * Force * Mesh->GetMass();
+	Mesh->SetPhysicsAngularVelocityInDegrees(FVector::Zero());
 	Mesh->AddImpulseAtLocation(ForceVector , Location);
+	Mesh->SetPhysicsAngularVelocityInDegrees(FVector::Zero());
 }
 

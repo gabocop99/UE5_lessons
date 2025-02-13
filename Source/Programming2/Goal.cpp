@@ -39,8 +39,5 @@ void AGoal::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 void AGoal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	GEngine->AddOnScreenDebugMessage(4, 0.1, FColor::Red, FString::FromInt(Score));
-	
 }
 

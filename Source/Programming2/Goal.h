@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Goal.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGoalState);
+
 UCLASS()
 class PROGRAMMING2_API AGoal : public AActor
 {
@@ -14,6 +16,7 @@ class PROGRAMMING2_API AGoal : public AActor
 	UPROPERTY(VisibleAnywhere)
 	int Score = 0;
 
+	
 	
 public:	
 	// Sets default values for this actor's properties
@@ -29,7 +32,4 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	
-
 };
