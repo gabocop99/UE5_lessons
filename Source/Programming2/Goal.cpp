@@ -4,7 +4,6 @@
 #include "Goal.h"
 
 #include "PhysicsReceiver.h"
-#include "ToolBuilderUtil.h"
 
 // Sets default values
 AGoal::AGoal()
