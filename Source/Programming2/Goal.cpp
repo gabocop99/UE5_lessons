@@ -3,12 +3,7 @@
 
 #include "Goal.h"
 
-#include <filesystem>
-
 #include "PhysicsReceiver.h"
-#include "Programming2Character.h"
-#include "ToolBuilderUtil.h"
-#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AGoal::AGoal()
