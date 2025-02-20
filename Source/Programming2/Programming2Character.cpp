@@ -118,8 +118,21 @@ void AProgramming2Character::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	AimTimeline.TickTimeline(DeltaSeconds);
+
+	FireTimer += DeltaSeconds;
+
+	if (FireTimer > ReloadTime && !bCanShoot)
+	{
+		OnEndReload.Broadcast();
+		bCanShoot = true;
+		FireTimer = 0.0f;
+	}
 }
 
+float AProgramming2Character::GetReloadTimer()
+{
+	return FireTimer / ReloadTime;
+}
 
 void AProgramming2Character::BeginPlay()
 {
@@ -217,9 +230,17 @@ void AProgramming2Character::AimOut()
 
 void AProgramming2Character::Shoot()
 {
+	if (!bCanShoot)
+	{
+		return;
+	}
+
+	bCanShoot = false;
+	
+	OnStartFire.Broadcast();
+	
 	FVector Start = FollowCamera->GetComponentLocation();
 	FVector End = Start + FollowCamera->GetForwardVector() * 100000;
-
 
 	FHitResult Hit;
 	FCollisionQueryParams Params;

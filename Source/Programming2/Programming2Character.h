@@ -65,20 +65,35 @@ class AProgramming2Character : public ACharacter
 	UPROPERTY(BlueprintAssignable)
 	FGameStateCharacter OnEndAiming;
 
+	UPROPERTY(BlueprintAssignable)
+	FGameStateCharacter OnStartFire;
+
+	UPROPERTY(BlueprintAssignable)
+	FGameStateCharacter OnEndReload;
+
 	UPROPERTY(BlueprintAssignable,EditAnywhere)
 	FFCharacterShootDataSignature OnShootHit;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health", meta = (AllowPrivateAccess = "true"))
 	UHealthComponent* HealthComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting", meta = (AllowPrivateAccess = "true"))
+	float ReloadTime;
 	
-	UPROPERTY(EditAnywhere, Category = "LineTrace")
+	UPROPERTY(EditAnywhere, Category = "Shooting")
 	float HitForce;
 
-	UPROPERTY(EditAnywhere, Category = "LineTrace")
+	UPROPERTY(EditAnywhere, Category = "Shooting")
 	float MaxDistance;
 
-	UPROPERTY(EditAnywhere, Category = "LineTrace")
+	UPROPERTY(EditAnywhere, Category = "Shooting")
 	float ForceMultiplier;
+
+	UPROPERTY()
+	bool bCanShoot = true;
+
+	UPROPERTY()
+	float FireTimer;
 
 public:
 	AProgramming2Character();
@@ -129,5 +144,8 @@ public:
 
 	UFUNCTION()
 	float EvaluateForce(FVector HitPoint);
+
+	UFUNCTION(BlueprintCallable)
+	float GetReloadTimer();
 	
 };
