@@ -18,7 +18,9 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameStateCharacter);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFCharacterShootDataSignature, FHitResult, HitInfo);
+
 UCLASS(config=Game)
 class AProgramming2Character : public ACharacter
 {
@@ -65,8 +67,6 @@ class AProgramming2Character : public ACharacter
 	UPROPERTY(BlueprintAssignable)
 	FGameStateCharacter OnEndAiming;
 
-	UPROPERTY(BlueprintAssignable,EditAnywhere)
-	FFCharacterShootDataSignature OnShootHit;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health", meta = (AllowPrivateAccess = "true"))
 	UHealthComponent* HealthComponent;
@@ -77,6 +77,8 @@ class AProgramming2Character : public ACharacter
 
 public:
 	AProgramming2Character();
+	UPROPERTY(BlueprintAssignable, EditAnywhere)
+	FFCharacterShootDataSignature OnShootHit;
 
 protected:
 	/** Called for movement input */
@@ -122,5 +124,4 @@ public:
 	void HandleAimProgress(float Progress);
 	UFUNCTION()
 	void HandleOffsetProgress(FVector Offset);
-	
 };
