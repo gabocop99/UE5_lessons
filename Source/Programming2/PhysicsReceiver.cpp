@@ -14,7 +14,7 @@ UPhysicsReceiver::UPhysicsReceiver()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	Actor = GetOwner();
-	
+
 	// ...
 }
 
@@ -24,13 +24,14 @@ void UPhysicsReceiver::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Mesh = GetOwner()->GetComponentByClass<UStaticMeshComponent>();
 	// ...
-	
 }
 
 
 // Called every frame
-void UPhysicsReceiver::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UPhysicsReceiver::TickComponent(float DeltaTime, ELevelTick TickType,
+                                     FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -39,10 +40,18 @@ void UPhysicsReceiver::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UPhysicsReceiver::ReceivePush(float Force, FVector Direction, FVector Location)
 {
-	auto Mesh = GetOwner()->GetComponentByClass<UStaticMeshComponent>();
 	FVector ForceVector = Direction * Force * Mesh->GetMass();
 	Mesh->SetPhysicsAngularVelocityInDegrees(FVector::Zero());
-	Mesh->AddImpulseAtLocation(ForceVector , Location);
+	Mesh->AddImpulseAtLocation(ForceVector, Location);
 	Mesh->SetPhysicsAngularVelocityInDegrees(FVector::Zero());
 }
 
+void UPhysicsReceiver::DampPhysics()
+{
+	auto Velocity = Mesh->GetComponentVelocity();
+	auto Angular = Mesh->GetPhysicsAngularVelocityInDegrees();
+	FVector DampedVelocity = Velocity * VelocityDampingPercentage;
+	FVector DampedAngularVelocity = Angular * VelocityDampingPercentage;
+	Mesh->SetPhysicsLinearVelocity(DampedVelocity);
+	Mesh->SetPhysicsAngularVelocityInDegrees(DampedAngularVelocity);
+}

@@ -7,15 +7,18 @@
 #include "PhysicsReceiver.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class PROGRAMMING2_API UPhysicsReceiver : public UActorComponent
 {
 	GENERATED_BODY()
 
 	UPROPERTY()
 	AActor* Actor;
-	
-public:	
+
+	UPROPERTY()
+	UMeshComponent* Mesh;
+
+public:
 	// Sets default values for this component's properties
 	UPhysicsReceiver();
 
@@ -23,10 +26,17 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 	void ReceivePush(float Force, FVector Direction, FVector Location);
-		
+
+	UFUNCTION(BlueprintCallable)
+	void DampPhysics();
+
+	UPROPERTY(EditAnywhere, Category = "VelocityDamp",
+		meta=(ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	float VelocityDampingPercentage;
 };
