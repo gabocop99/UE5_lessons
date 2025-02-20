@@ -70,10 +70,15 @@ class AProgramming2Character : public ACharacter
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health", meta = (AllowPrivateAccess = "true"))
 	UHealthComponent* HealthComponent;
+	
+	UPROPERTY(EditAnywhere, Category = "LineTrace")
+	float HitForce;
 
+	UPROPERTY(EditAnywhere, Category = "LineTrace")
+	float MaxDistance;
 
-	UPROPERTY(EditAnywhere)
-	float Force;
+	UPROPERTY(EditAnywhere, Category = "LineTrace")
+	float ForceMultiplier;
 
 public:
 	AProgramming2Character();
@@ -86,8 +91,7 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 	virtual void BeginPlay() override;
-
-protected:
+	
 	virtual void NotifyControllerChanged() override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -122,5 +126,8 @@ public:
 	void HandleAimProgress(float Progress);
 	UFUNCTION()
 	void HandleOffsetProgress(FVector Offset);
+
+	UFUNCTION()
+	float EvaluateForce(FVector HitPoint);
 	
 };

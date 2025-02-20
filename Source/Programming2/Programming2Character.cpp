@@ -11,6 +11,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "PhysicsReceiver.h"
+#include "VectorUtil.h"
 #include "Components/TimelineComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -61,8 +62,6 @@ AProgramming2Character::AProgramming2Character()
 	WeaponMesh->SetupAttachment(GetMesh(), FName("right_hand_weapon_rSocket"));
 
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
-
-
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -147,6 +146,21 @@ void AProgramming2Character::HandleOffsetProgress(FVector3d Offset)
 	CameraBoom->SocketOffset = Offset;
 }
 
+float AProgramming2Character::EvaluateForce(FVector HitPoint)
+{
+	FVector WorldPosition = GetActorLocation();
+	float Distance = FVector::Distance(WorldPosition, HitPoint);
+
+	if (Distance < 1)
+	{
+		Distance = 1;
+	}
+
+	float EvaluatedForce = HitForce / Distance * ForceMultiplier;
+
+	return EvaluatedForce;
+}
+
 void AProgramming2Character::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
@@ -217,7 +231,7 @@ void AProgramming2Character::Shoot()
 	DrawDebugLine(GetWorld(), Start, End, FColor::Red);
 
 	AActor* HitActor = Hit.GetActor();
-	if(bHit && Hit.GetActor()->GetComponentByClass<UPhysicsReceiver>())
+	if (bHit && Hit.GetActor()->GetComponentByClass<UPhysicsReceiver>())
 	{
 		OnShootHit.Broadcast(Hit);
 	}
@@ -231,6 +245,7 @@ void AProgramming2Character::Shoot()
 			FVector Direction = End - Start;
 			Direction.Normalize();
 
+			float Force = EvaluateForce(Hit.Location);
 			Phys->ReceivePush(Force, Direction, Hit.Location);
 		}
 	}
