@@ -61,6 +61,8 @@ AProgramming2Character::AProgramming2Character()
 	WeaponMesh->SetupAttachment(GetMesh(), FName("right_hand_weapon_rSocket"));
 
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
+
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -212,12 +214,15 @@ void AProgramming2Character::Shoot()
 	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Pawn, Params);
 	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Black, "bHit ");
 
-
 	DrawDebugLine(GetWorld(), Start, End, FColor::Red);
 
+	AActor* HitActor = Hit.GetActor();
+	if(bHit && Hit.GetActor()->GetComponentByClass<UPhysicsReceiver>())
+	{
+		OnShootHit.Broadcast(Hit);
+	}
 	if (!bHit) return;
 
-	AActor* HitActor = Hit.GetActor();
 	if (IsValid(HitActor))
 	{
 		auto Phys = HitActor->GetComponentByClass<UPhysicsReceiver>();
